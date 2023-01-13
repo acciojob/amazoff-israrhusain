@@ -24,18 +24,21 @@ public class OrderRepository {
    public void addOrder(Order order){
       ordermap.put(order.getId(), order);
    } 
-  //2 save deliverpartner
-   public void addDeliverypartner(String partnerId){
-    DeliveryPartner deliveryPartner=new DeliveryPartner(partnerId);
-      deliverypartnerrmap.put(partnerId,deliveryPartner);
-   }
-
+  
+  
+ 
    //3 save order partner 
    public void addorderpartner(String orderId, String partnerId){
        if(ordermap.containsKey(orderId) && deliverypartnerrmap.containsKey(partnerId)){
           orderpartnermap.put(partnerId,orderId);
        }
-      
+        
+   }
+
+  //2 save deliverpartner
+   public void addDeliverypartner(String partnerId){
+    DeliveryPartner deliveryPartner=new DeliveryPartner(partnerId);
+      deliverypartnerrmap.put(partnerId,deliveryPartner);
    }
 
    //4 save orderpartner pair
@@ -64,8 +67,17 @@ public DeliveryPartner getPartner(String partnerId){
 }
 
 public Integer getNumbersOrderbypartnerId(String partnerId){
-     DeliveryPartner partner=deliverypartnerrmap.get(partnerId);
-     return partner.getNumberOfOrders();
+ int count=0;
+  while(true){
+    if(orderpartnermap.containsKey(partnerId)){
+         count++;
+    }
+    else{
+      break;
+    }
+     
+  }
+  return count;
 }
  public List<String> getListorder(String partnerId){
       List<String> list =new ArrayList<>();
