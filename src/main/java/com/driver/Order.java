@@ -1,7 +1,5 @@
 package com.driver;
-import java.util.*;
-import java.time.*;
-import java.time.format.*;
+
 public class Order {
 
     private String id;
@@ -9,7 +7,7 @@ public class Order {
     
     public Order(String id, String deliveryTime) {
         this.id=id;
-        deliveryTime = String.format("%02d",hours) + ":" + String.format("%02d", minutes);
+        deliveryTime = String.format("%02d") + ":" + String.format("%02d");
         String[] timef=deliveryTime.split(":");  
         
         int hour=Integer.parseInt(timef[0]);  
