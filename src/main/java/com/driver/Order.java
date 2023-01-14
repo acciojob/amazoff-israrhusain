@@ -9,7 +9,7 @@ public class Order {
     }
     public Order(String id, String deliveryTime) {
         this.id=id;
-        this.deliveryTime=Integer.valueOf(deliveryTime);
+        this.deliveryTime=deliveryTime;
 
         // The deliveryTime has to converted from string to int and then stored in the attribute
         //deliveryTime  = HH*60 + MM
@@ -19,5 +19,5 @@ public class Order {
         return id;
     }
 
-    public int getDeliveryTime() {return deliveryTime;}
+    public String getDeliveryTime() {return deliveryTime;}
 }
