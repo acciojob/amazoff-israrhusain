@@ -7,20 +7,11 @@ public class Order {
     
     public Order(String id, String deliveryTime) {
         this.id=id;
-        deliveryTime = String.format("%02d") + ":" + String.format("%02d");
-        String[] timef=deliveryTime.split(":");  
-        
-        int hour=Integer.parseInt(timef[0]);  
-        int minute=Integer.parseInt(timef[1]);  
-         
-        
-          
-        this.deliveryTime =minute + (60 * hour);  
-        
-        
-         
+        int h=Integer.parseInt(deliveryTime.split(":")[0])
+        int m=Integer.parseInt(deliveryTime.split(":")[1]);
         // The deliveryTime has to converted from string to int and then stored in the attribute
         //deliveryTime  = HH*60 + MM
+        this.deliveryTime=m+h*60;
     }
 
     public String getId() {
