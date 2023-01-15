@@ -22,8 +22,9 @@ public class OrderRepository {
     }
   //1 save order
    public void addOrder(Order order){
-      ordermap.put(order.getId(), order);
-   } 
+      
+       ordermap.put(order.getId(),order);
+   }
   
    
 
@@ -89,14 +90,7 @@ public Integer getNumbersOrderbypartnerId(String partnerId){
 }
 
 public Integer getUnassignedCountorder(){
-     Integer cnt=0;
-     for(String Id:deliverypartnerrmap.keySet()){
-        for(String s:orderpartnermap.keySet())
-         if(!(Id.equals(s))){
-            cnt++;
-         }
-       }
-       return cnt;
+    return  ordermap.size()-orderpartnermap.size();
 }
 public Integer getOrdersLeft(String time,String partnerId){
         int cnt=0;
@@ -127,17 +121,17 @@ public int getLasttime(String partnerId){
   return ans;
 }
 public  void deletePartner(String partnerId){
-  List<String> orders=new ArrayList<>();
-
-  if(partnerorderpairmap.containsKey(partnerId)){
-     orders= partnerorderpairmap.get(partnerId);
-  for(String order: orders){
-     if(ordermap.containsKey(order)){
-         ordermap.remove(order);
-     }
+  
+    if(orderpartnermap.containsKey(partnerId)){
+       String order=orderpartnermap.get(partnerId);
+       for(String id:ordermap.keySet()){
+        
+        if(!(order.equals(id))){
+           ordermap.remove(order);
+       }
+    }
   }
-  partnerorderpairmap.remove(partnerId);
- }
+    
  if(deliverypartnerrmap.containsKey(partnerId)){
      deliverypartnerrmap.remove(partnerId);
  }
@@ -146,15 +140,17 @@ public  void deletePartner(String partnerId){
 
 public  void deleteOrder(String orderId){
   
-  if(orderpartnermap.containsKey(orderId)){
-       ordermap.remove(orderpartnermap.get(orderId));
+  if(ordermap.containsKey(orderId)){
+       ordermap.remove(orderId);
     }
-    
-  orderpartnermap.remove(orderId);
- if(deliverypartnerrmap.containsKey(orderId)){
-     deliverypartnerrmap.remove(orderId);
- }
-
+    for(String partnerId:deliverypartnerrmap.keySet()){
+          
+          String Id=orderpartnermap.get(partnerId);
+          if(Id.equals(orderId)){
+              deliverypartnerrmap.remove(partnerId);
+           }
+        
+    }
 }
 }
 
