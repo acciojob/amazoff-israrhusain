@@ -31,7 +31,8 @@ public class OrderController {
 
     @PostMapping("/add-partner/{partnerId}")
     public ResponseEntity<String> addPartner(@PathVariable String partnerId){
-            orderservice.addpartnerBy(partnerId);
+           DeliveryPartner partner=new DeliveryPartner(partnerId);
+            orderservice.addpartnerBy(partner);
         return new ResponseEntity<>("New delivery partner added successfully", HttpStatus.CREATED);
     }
 
@@ -39,7 +40,7 @@ public class OrderController {
     public ResponseEntity<String> addOrderPartnerPair(@RequestParam String orderId, @RequestParam String partnerId){
 
         //This is basically assigning that order to that partnerId
-        orderservice.addorderpartner(partnerId, orderId);
+        orderservice.addorderpartner(orderId, partnerId);
         return new ResponseEntity<>("New order-partner pair added successfully", HttpStatus.CREATED);
     }
 
@@ -113,7 +114,7 @@ public class OrderController {
     @GetMapping("/get-last-delivery-time/{partnerId}")
     public ResponseEntity<String> getLastDeliveryTimeByPartnerId(@PathVariable String partnerId){
         String time = null;
-           time=orderservice.getLasttime(partnerId);
+           time=orderservice.getLasttime(partnerId)+"";
         //Return the time when that partnerId will deliver his last delivery order.
 
         return new ResponseEntity<>(time, HttpStatus.CREATED);

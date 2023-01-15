@@ -16,19 +16,19 @@ public class OrderService {
     }
 
     
-    public  void addpartnerBy(String partneId){
+    public  void addpartnerBy(DeliveryPartner partneId){
         orderRepository.addDeliverypartner(partneId);
     }
 
 
-    public void addorderpartner(String partnerId,String orderId){
-        orderRepository.addorderpartner(partnerId,orderId);;
+    public void addorderpartner(String orderId,String partnerId){
+        orderRepository.addorderpartner(orderId,partnerId);;
     }
 
-    public void addDeliverypartnerpair(String partnerId, String orderId){
+    // public void addDeliverypartnerpair(String orderId, String partnerId){
 
-        orderRepository.addDeliverypartnerpair(partnerId,orderId);
-    }
+    //     orderRepository.addDeliverypartnerpair(orderId,partnerId);
+    // }
     
     // get order
     
@@ -77,7 +77,7 @@ public class OrderService {
 
 
 
-    public String getLasttime(String partnerId){
+    public int getLasttime(String partnerId){
         return orderRepository.getLasttime(partnerId);
     }
 

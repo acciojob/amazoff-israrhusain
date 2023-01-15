@@ -12,7 +12,7 @@ public class OrderRepository {
     private HashMap<String,DeliveryPartner> deliverypartnerrmap;
     private HashMap<String,String> orderpartnermap;
 
-    private HashMap<String,ArrayList<String>> partnerorderpairmap;
+    private HashMap<String,List<String>> partnerorderpairmap;
 
     OrderRepository(){
         this.deliverypartnerrmap=new HashMap<>();
@@ -25,67 +25,64 @@ public class OrderRepository {
       ordermap.put(order.getId(), order);
    } 
   
-  
- 
-   //3 save order partner 
-   public void addorderpartner(String orderId, String partnerId){
-       if(ordermap.containsKey(orderId) ){
-          orderpartnermap.put(partnerId,orderId);
-       }
-        
-   }
+   
 
   //2 save deliverpartner
-   public void addDeliverypartner(String partnerId){
-    int cnt=0;
-    DeliveryPartner deliveryPartner=new DeliveryPartner(partnerId);
-      for(String id:orderpartnermap.keySet()){
-        if(id.equals(partnerId)){
-          cnt++;
-        }
+   public void addDeliverypartner(DeliveryPartner partner){
+         deliverypartnerrmap.put(partner.getId(),partner);
       }
-      deliveryPartner.setNumberOfOrders(cnt);
-      deliverypartnerrmap.put(partnerId,deliveryPartner);
-   }
+      
+   
+   public void addorderpartner(String orderId, String partnerId){
+        
+        DeliveryPartner partner =deliverypartnerrmap.get(partnerId);
+         int n=partner.getNumberOfOrders();
+         partner.setNumberOfOrders(n+1);
+        orderpartnermap.put(partnerId,orderId);
 
-   //4 save orderpartner pair
-   public void addDeliverypartnerpair(String partnerId, String orderId){
 
-    if(orderpartnermap.containsKey(partnerId)  && ordermap.containsKey(orderId)){
-   ArrayList<String> orderlist=new ArrayList<>();
-
-     if(partnerorderpairmap.containsKey(partnerId)){
+       List<String> orderlist=new ArrayList<>();
+       if(partnerorderpairmap.size()==0){
+            orderlist.add(orderId);
+       }
+       if(partnerorderpairmap.containsKey(partnerId)){
+        
         orderlist=partnerorderpairmap.get(partnerId);
         orderlist.add(orderId);
-      }
-      partnerorderpairmap.put(partnerId,orderlist) ;
-  }
-}
-
-// get order
-
+       }
+         partnerorderpairmap.put(partnerId,orderlist);
+      
+     }
+ 
+             
+       
 public Order getOrderById(String orderId){
     return ordermap.get(orderId);
     
 }
 
+
+
 public DeliveryPartner getPartner(String partnerId){
     return deliverypartnerrmap.get(partnerId);
 }
 
+
+
 public Integer getNumbersOrderbypartnerId(String partnerId){
-        DeliveryPartner partner=deliverypartnerrmap.get(partnerId);
-        return partner.getNumberOfOrders();
+      Integer c=0;   
+     DeliveryPartner partner=deliverypartnerrmap.get(partnerId);
+     c=partner.getNumberOfOrders();
+     return c;
 }
  public List<String> getListorder(String partnerId){
       List<String> list =new ArrayList<>();
-      if(partnerorderpairmap.containsKey(partnerId)){
-           list=partnerorderpairmap.get(partnerId);
-           
-        }
-     
+       
+      list=partnerorderpairmap.get(partnerId);
       return list;
  }
+
+
  public List<String> getallOrderList(){
       return new ArrayList<>(ordermap.keySet());
         
@@ -103,29 +100,29 @@ public Integer getUnassignedCountorder(){
 }
 public Integer getOrdersLeft(String time,String partnerId){
         int cnt=0;
-        DeliveryPartner partner=new DeliveryPartner(partnerId);
+      
         List<String> orders=new ArrayList<>();
          if(partnerorderpairmap.containsKey(partnerId)){
              orders=partnerorderpairmap.get(partnerId);
              for(String orderId: orders){
                 Order order=ordermap.get(orderId);
                 String gettime=order.getDeliveryTime()+"";
-                if(gettime.equals(time)){
+                if(!gettime.equals(time)){
                   cnt++;
                 }
              }
          }
-     return  partner.getNumberOfOrders()-cnt;
+     return  cnt;
 }
-public String getLasttime(String partnerId){
+public int getLasttime(String partnerId){
   
-  String ans="";
+  int ans=0;
   List<String> orders=new ArrayList<>();
   if(partnerorderpairmap.containsKey(partnerId)){
      orders=partnerorderpairmap.get(partnerId);
       String lastorderId=orders.get(orders.size()-1);
        Order order=ordermap.get(lastorderId);
-       ans+=order.getDeliveryTime();
+        ans=order.getDeliveryTime();
    }
   return ans;
 }
