@@ -95,7 +95,7 @@ public Integer getUnassignedCountorder(){
      Integer cnt=0;
      for(String Id:deliverypartnerrmap.keySet()){
         for(String s:orderpartnermap.keySet())
-         if(Id.equals(s)==false){
+         if(!(Id.equals(s))){
             cnt++;
          }
        }
