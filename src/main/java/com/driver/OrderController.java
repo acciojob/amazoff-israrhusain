@@ -113,7 +113,7 @@ public class OrderController {
 
     @GetMapping("/get-last-delivery-time/{partnerId}")
     public ResponseEntity<String> getLastDeliveryTimeByPartnerId(@PathVariable String partnerId){
-        String time = null;
+          String time = null;
            time=orderservice.getLastOrdertime(partnerId)+"";
         //Return the time when that partnerId will deliver his last delivery order.
 
