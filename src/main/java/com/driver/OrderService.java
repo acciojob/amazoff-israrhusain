@@ -64,9 +64,9 @@ public class OrderService {
     }
     
     public Integer UnassignedCountorder(){
-
-        return orderRepository.getUnassignedCountorder();
-
+               Integer c=0;
+               c=orderRepository.getUnassignedCountorder();
+               return c;
         }
 
 
