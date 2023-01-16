@@ -57,7 +57,7 @@ public class OrderRepository {
  
              
        
-public Order getOrderById(String orderId){
+public Order getOrderbyId(String orderId){
     return ordermap.get(orderId);
     
 }
@@ -90,7 +90,9 @@ public Integer getNumbersOrderbypartnerId(String partnerId){
 }
 
 public Integer getUnassignedCountorder(){
-    return  ordermap.size()-orderpartnermap.size();
+      Integer count=0;
+      count=ordermap.size()-orderpartnermap.size();
+      return count;
 }
 public Integer getOrdersLeft(String time,String partnerId){
         int cnt=0;
