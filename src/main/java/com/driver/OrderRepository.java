@@ -151,7 +151,7 @@ public String deletePartner(String partnerId){
       ListIterator<String> itr=list.listIterator();
        while(itr.hasNext()){
          String s=itr.next();
-         partnerorderpairmap.remove(s);
+         orderpartnermap.remove(s);
        }
        partnerorderpairmap.remove(partnerId);
        return "deleted";
