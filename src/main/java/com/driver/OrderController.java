@@ -2,7 +2,7 @@ package com.driver;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("orders")
 public class OrderController {
      
-    @Autowired
+    //@Autowired
 
-    OrderService orderservice;
+
+    OrderService orderservice=new OrderService();
 
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
@@ -66,7 +67,7 @@ public class OrderController {
     public ResponseEntity<Integer> getOrderCountByPartnerId(@PathVariable String partnerId){
 
         
-          int orderCount=orderservice.getNumbersOrder(partnerId);
+          Integer orderCount=orderservice.getNumbersOrder(partnerId);
         //orderCount should denote the orders given by a partner-id
 
         return new ResponseEntity<>(orderCount, HttpStatus.CREATED);
@@ -94,7 +95,7 @@ public class OrderController {
         
 
         //Count of orders that have not been assigned to any DeliveryPartner
-       int countOfOrders=orderservice.UnassignedCountorder();
+       Integer countOfOrders=orderservice.UnassignedCountorder();
 
         return new ResponseEntity<>(countOfOrders, HttpStatus.CREATED);
     }
@@ -105,7 +106,7 @@ public class OrderController {
         
 
         //countOfOrders that are left after a particular time of a DeliveryPartner
-         int countOfOrders=orderservice.getOrdersLeftdelivered(time,partnerId);
+         Integer countOfOrders=orderservice.getOrdersLeftdelivered(time,partnerId);
         return new ResponseEntity<>(countOfOrders, HttpStatus.CREATED);
     }
 
