@@ -38,58 +38,67 @@ public class OrderService {
     }
     
     public DeliveryPartner getPartnerbyId(String partnerId){
-        return orderRepository.getPartner(partnerId);
+         DeliveryPartner par=orderRepository.getPartner(partnerId);
+         return par;
     }
     
-    public Integer getNumbersOrder(String partnerId){
-        return orderRepository.getNumbersOrderbypartnerId(partnerId);
+    public int getNumbersOrder(String partnerId){
+
+         int c=orderRepository.getNumbersOrderbypartnerId(partnerId);
+         return c;
     }
 
 
      public List<String> getListorderbyId(String partnerId){
-              List<String> list=new ArrayList<>();
-              list=orderRepository.getListorder(partnerId);
+             
+              List<String> res=orderRepository.getListorder(partnerId);
 
-              return list;
+              return res;
             }
          
           
 
      public List<String> getallOrder(){
-        List<String> list=new ArrayList<>(); 
-          list=orderRepository.getallOrderList();
+       
+        List<String> list=orderRepository.getallOrderList();
 
           return list;
             
     }
     
     public Integer UnassignedCountorder(){
-              
-            return orderRepository.getUnassignedCountorder();
-
+             Integer c=0; 
+             c=orderRepository.getUnassignedCountorder();
+             return c;
         }
 
 
     public Integer getOrdersLeftdelivered(String time,String partnerId){
-            
-        return orderRepository.getOrdersLeft(time,partnerId);
+          Integer c=0;  
+        c=orderRepository.getOrdersLeft(time,partnerId);
+        return c;
     }
 
 
 
     public String getLastOrdertime(String partnerId){
-        return orderRepository.getLasttime(partnerId);
+        String res="";
+         res= orderRepository.getLasttime(partnerId);
+         return res;
     }
 
 
-    public  void deletePartnerbyId(String partnerId){
-      orderRepository.deletePartner(partnerId);
+    public String deletePartnerbyId(String partnerId){
+        String res="";
+      res=orderRepository.deletePartner(partnerId);
+      return res;
     }
     
     
-    public  void deleteOrderbyId(String orderId){
-      
-       orderRepository.deleteOrder(orderId);
+    public  String deleteOrderbyId(String orderId){
+       String s="";
+       s=orderRepository.deleteOrder(orderId);
+       return s;
     
     }
 
