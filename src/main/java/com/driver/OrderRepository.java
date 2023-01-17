@@ -21,21 +21,23 @@ public class OrderRepository {
         this.partnerorderpairmap=new HashMap<>();
     }
   //1 save order
-   public void addOrder(Order order){
+   public String addOrder(Order order){
       
        ordermap.put(order.getId(),order);
+       return "added";
    }
   
    
 
   //2 save deliverpartner
-   public void addDeliverypartner(String partnerId){
+   public String addDeliverypartner(String partnerId){
         DeliveryPartner partner=new DeliveryPartner(partnerId);
          deliverypartnerrmap.put(partner.getId(),partner);
+         return "added";
       }
       
    
-   public void addorderpartner(String orderId, String partnerId){
+   public String addorderpartner(String orderId, String partnerId){
         
         DeliveryPartner partner =deliverypartnerrmap.get(partnerId);
          int n=partner.getNumberOfOrders();
@@ -53,6 +55,8 @@ public class OrderRepository {
         orderlist.add(orderId);
        }
          partnerorderpairmap.put(partnerId,orderlist);
+
+         return "updated";
       
      }
  
@@ -71,8 +75,8 @@ public DeliveryPartner getPartner(String partnerId){
 
 
 
-public Integer getNumbersOrderbypartnerId(String partnerId){
-      Integer c=0;   
+public int getNumbersOrderbypartnerId(String partnerId){
+      int c=0;   
      DeliveryPartner partner=deliverypartnerrmap.get(partnerId);
      c=partner.getNumberOfOrders();
      return c;
@@ -92,12 +96,12 @@ public Integer getNumbersOrderbypartnerId(String partnerId){
         
 }
 
-public Integer getUnassignedCountorder(){
-      Integer count=0;
+public int getUnassignedCountorder(){
+      int count=0;
       count=ordermap.size()-orderpartnermap.size();
       return count;
 }
-public Integer getOrdersLeft(String time,String partnerId){
+public int getOrdersLeft(String time,String partnerId){
         int cnt=0;
         
            List<String> orders=partnerorderpairmap.get(partnerId);
@@ -142,7 +146,7 @@ public String getLasttime(String partnerId){
         ans=shour+":"+minute;
         return ans;
 }
-public  void deletePartner(String partnerId){
+public String deletePartner(String partnerId){
   
       deliverypartnerrmap.remove(partnerId);
       List<String> list=partnerorderpairmap.getOrDefault(partnerId, new ArrayList<>());
@@ -152,9 +156,10 @@ public  void deletePartner(String partnerId){
          partnerorderpairmap.remove(s);
        }
        partnerorderpairmap.remove(partnerId);
+       return "deleted";
     }
   
-public  void deleteOrder(String orderId){
+public String deleteOrder(String orderId){
   
   if(ordermap.containsKey(orderId)){
        ordermap.remove(orderId);
@@ -169,7 +174,7 @@ public  void deleteOrder(String orderId){
             }
         }
           partnerorderpairmap.put(partnerId,list);
-        
+        return "deleted";
     }
 }
 
