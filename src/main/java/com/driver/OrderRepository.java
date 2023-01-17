@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 public class OrderRepository {
     
      
-    private HashMap<String,Order> ordermap;
-    private HashMap<String,DeliveryPartner> deliverypartnerrmap;
-    private HashMap<String,String> orderpartnermap;
+            HashMap<String,Order> ordermap;
+           HashMap<String,DeliveryPartner> deliverypartnerrmap;
+           HashMap<String,String> orderpartnermap;
 
-    private HashMap<String,List<String>> partnerorderpairmap;
+          HashMap<String,List<String>> partnerorderpairmap;
 
     OrderRepository(){
         this.deliverypartnerrmap=new HashMap<>();
@@ -32,7 +32,7 @@ public class OrderRepository {
   //2 save deliverpartner
    public String addDeliverypartner(String partnerId){
         DeliveryPartner partner=new DeliveryPartner(partnerId);
-         deliverypartnerrmap.put(partner.getId(),partner);
+         deliverypartnerrmap.put(partnerId,partner);
          return "added";
       }
       
@@ -48,6 +48,7 @@ public class OrderRepository {
        partner.setNumberOfOrders(orderlist.size());
       
 
+
          return "updated";
       
      }
@@ -55,29 +56,33 @@ public class OrderRepository {
              
        
 public Order getOrderbyId(String orderId){
-    return ordermap.get(orderId);
+    for(String s:ordermap.keySet()){
+        if(s.equals(orderId)){
+            return ordermap.get(s);
+        }
+     }
+    return null;
     
 }
 
 
 
 public DeliveryPartner getPartner(String partnerId){
-    return deliverypartnerrmap.get(partnerId);
+    if(deliverypartnerrmap.containsKey(partnerId)){
+       return deliverypartnerrmap.get(partnerId);
+    }
+    return null;
 }
 
 
 
 public int getNumbersOrderbypartnerId(String partnerId){
-      int c=0;   
-     DeliveryPartner partner=deliverypartnerrmap.get(partnerId);
-     c=partner.getNumberOfOrders();
-     return c;
+     
+     int orders=partnerorderpairmap.getOrDefault(partnerId,new ArrayList<>()).size();
+     return orders;
 }
  public List<String> getListorder(String partnerId){
-      List<String> list=partnerorderpairmap.get(partnerId);
-       if(partnerorderpairmap.size()==0){
-              list=new ArrayList<>();
-       }
+      List<String> list=partnerorderpairmap.getOrDefault(partnerId,new ArrayList<>());
       
       return list;
  }
@@ -89,8 +94,8 @@ public int getNumbersOrderbypartnerId(String partnerId){
 }
 
 public int getUnassignedCountorder(){
-      int count=0;
-      count=ordermap.size()-orderpartnermap.size();
+      
+      int count=ordermap.size()-orderpartnermap.size();
       return count;
 }
 public int getOrdersLeft(String time,String partnerId){
@@ -100,8 +105,8 @@ public int getOrdersLeft(String time,String partnerId){
            int derliveryTime=Integer.parseInt(time.substring(0,2))*60+Integer.parseInt(time.substring(3));
              for(String orderId: orders){
                 Order order=ordermap.get(orderId);
-                int gettime=order.getDeliveryTime();
-                if(gettime>derliveryTime){
+                
+                if(order.getDeliveryTime()>derliveryTime){
                   cnt++;
                 }
             
@@ -112,13 +117,14 @@ public String getLasttime(String partnerId){
   
   int deliveryTime=0;
   String ans="";
-  List<String> orders=new ArrayList<>();
-  if(partnerorderpairmap.containsKey(partnerId)){
-     orders=partnerorderpairmap.get(partnerId);
-      String lastorderId=orders.get(orders.size()-1);
-       Order order=ordermap.get(lastorderId);
-        deliveryTime=order.getDeliveryTime();
-   }
+  List<String> orderslist=new ArrayList<>();
+  
+     orderslist=partnerorderpairmap.get(partnerId);
+       for(String id: orderslist){
+        Order order=ordermap.get(id);
+        deliveryTime=Math.max(order.getDeliveryTime(),deliveryTime);
+       }
+   
         int hour=deliveryTime/60;
         String shour="";
         if(hour<10){
@@ -160,9 +166,11 @@ public String deleteOrder(String orderId){
           
         String partnerId=orderpartnermap.get(orderId);
         List<String> list=partnerorderpairmap.get(partnerId);
-        for(String s:list){
+        ListIterator<String> itr=list.listIterator();
+        while(itr.hasNext()){
+            String s=itr.next();
             if(s.equals(orderId)){
-                list.remove(s);
+                itr.remove();
             }
         }
           partnerorderpairmap.put(partnerId,list);

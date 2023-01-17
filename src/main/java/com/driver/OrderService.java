@@ -2,13 +2,13 @@ package com.driver;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderService {
-    @Autowired
-    OrderRepository orderRepository;
+    //@Autowired
+    OrderRepository orderRepository=new OrderRepository();
 
     public String addOrderobject(Order order){
         String result=orderRepository.addOrder(order);
@@ -27,12 +27,7 @@ public class OrderService {
         return res;
     }
 
-    // public void addDeliverypartnerpair(String orderId, String partnerId){
-
-    //     orderRepository.addDeliverypartnerpair(orderId,partnerId);
-    // }
-    
-    // get order
+   
     
     public Order getOrderwithId(String orderId){
          Order order=orderRepository.getOrderbyId(orderId);
@@ -72,8 +67,9 @@ public class OrderService {
     public int UnassignedCountorder(){
              
             int c=orderRepository.getUnassignedCountorder();
-             return c;
-        }
+            
+        return c;
+    }
 
 
     public int getOrdersLeftdelivered(String time,String partnerId){

@@ -25,14 +25,14 @@ public class OrderController {
 
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
-           orderservice.addOrderobject(order);
+        orderservice.addOrderobject(order);
         return new ResponseEntity<>("New order added successfully", HttpStatus.CREATED);
     }
 
     @PostMapping("/add-partner/{partnerId}")
     public ResponseEntity<String> addPartner(@PathVariable String partnerId){
            
-            orderservice.addpartnerBy(partnerId);
+        orderservice.addpartnerBy(partnerId);
         return new ResponseEntity<>("New delivery partner added successfully", HttpStatus.CREATED);
     }
 
@@ -66,7 +66,7 @@ public class OrderController {
     public ResponseEntity<Integer> getOrderCountByPartnerId(@PathVariable String partnerId){
 
         
-          Integer orderCount=orderservice.getNumbersOrder(partnerId);
+          int orderCount=orderservice.getNumbersOrder(partnerId);
         //orderCount should denote the orders given by a partner-id
 
         return new ResponseEntity<>(orderCount, HttpStatus.CREATED);
@@ -94,7 +94,7 @@ public class OrderController {
         
 
         //Count of orders that have not been assigned to any DeliveryPartner
-       Integer countOfOrders=orderservice.UnassignedCountorder();
+       int countOfOrders=orderservice.UnassignedCountorder();
 
         return new ResponseEntity<>(countOfOrders, HttpStatus.CREATED);
     }
@@ -105,7 +105,7 @@ public class OrderController {
         
 
         //countOfOrders that are left after a particular time of a DeliveryPartner
-         Integer countOfOrders=orderservice.getOrdersLeftdelivered(time,partnerId);
+         int countOfOrders=orderservice.getOrdersLeftdelivered(time,partnerId);
         return new ResponseEntity<>(countOfOrders, HttpStatus.CREATED);
     }
 
