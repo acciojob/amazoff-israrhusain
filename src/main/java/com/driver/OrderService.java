@@ -1,6 +1,5 @@
 package com.driver;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +10,21 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public void addOrderobject(Order order){
-        orderRepository.addOrder(order);
+    public String addOrderobject(Order order){
+        String result=orderRepository.addOrder(order);
+        return result;
     }
 
     
-    public  void addpartnerBy(String partneId){
-        orderRepository.addDeliverypartner(partneId);
+    public String addpartnerBy(String partneId){
+        String res=orderRepository.addDeliverypartner(partneId);
+        return res;
     }
 
 
-    public void addorderpartnerpair(String orderId,String partnerId){
-        orderRepository.addorderpartner(orderId,partnerId);;
+    public String addorderpartnerpair(String orderId,String partnerId){
+        String res=orderRepository.addorderpartner(orderId,partnerId);
+        return res;
     }
 
     // public void addDeliverypartnerpair(String orderId, String partnerId){
@@ -33,7 +35,8 @@ public class OrderService {
     // get order
     
     public Order getOrderwithId(String orderId){
-        return orderRepository.getOrderbyId(orderId);
+         Order order=orderRepository.getOrderbyId(orderId);
+         return order;
         
     }
     
@@ -66,16 +69,16 @@ public class OrderService {
             
     }
     
-    public Integer UnassignedCountorder(){
-             Integer c=0; 
-             c=orderRepository.getUnassignedCountorder();
+    public int UnassignedCountorder(){
+             
+            int c=orderRepository.getUnassignedCountorder();
              return c;
         }
 
 
-    public Integer getOrdersLeftdelivered(String time,String partnerId){
-          Integer c=0;  
-        c=orderRepository.getOrdersLeft(time,partnerId);
+    public int getOrdersLeftdelivered(String time,String partnerId){
+           
+        int c=orderRepository.getOrdersLeft(time,partnerId);
         return c;
     }
 
@@ -89,15 +92,14 @@ public class OrderService {
 
 
     public String deletePartnerbyId(String partnerId){
-        String res="";
-      res=orderRepository.deletePartner(partnerId);
+       String res=orderRepository.deletePartner(partnerId);
       return res;
     }
     
     
     public  String deleteOrderbyId(String orderId){
-       String s="";
-       s=orderRepository.deleteOrder(orderId);
+       
+       String s=orderRepository.deleteOrder(orderId);
        return s;
     
     }
