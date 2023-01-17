@@ -16,7 +16,7 @@ public class OrderService {
     }
 
     
-    public  void addpartnerBy(DeliveryPartner partneId){
+    public  void addpartnerBy(String partneId){
         orderRepository.addDeliverypartner(partneId);
     }
 
@@ -64,9 +64,9 @@ public class OrderService {
     }
     
     public Integer UnassignedCountorder(){
-               Integer c=0;
-               c=orderRepository.getUnassignedCountorder();
-               return c;
+              
+            return orderRepository.getUnassignedCountorder();
+
         }
 
 
@@ -77,7 +77,7 @@ public class OrderService {
 
 
 
-    public int getLastOrdertime(String partnerId){
+    public String getLastOrdertime(String partnerId){
         return orderRepository.getLasttime(partnerId);
     }
 

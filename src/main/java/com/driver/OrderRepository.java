@@ -10,7 +10,7 @@ public class OrderRepository {
      
     private HashMap<String,Order> ordermap;
     private HashMap<String,DeliveryPartner> deliverypartnerrmap;
-    private HashMap<String,Order> orderpartnermap;
+    private HashMap<String,String> orderpartnermap;
 
     private HashMap<String,List<String>> partnerorderpairmap;
 
@@ -29,7 +29,8 @@ public class OrderRepository {
    
 
   //2 save deliverpartner
-   public void addDeliverypartner(DeliveryPartner partner){
+   public void addDeliverypartner(String partnerId){
+        DeliveryPartner partner=new DeliveryPartner(partnerId);
          deliverypartnerrmap.put(partner.getId(),partner);
       }
       
@@ -39,8 +40,7 @@ public class OrderRepository {
         DeliveryPartner partner =deliverypartnerrmap.get(partnerId);
          int n=partner.getNumberOfOrders();
          partner.setNumberOfOrders(n+1);
-         Order order=ordermap.get(orderId);
-        orderpartnermap.put(partnerId,order);
+        orderpartnermap.put(partnerId,orderId);
 
 
        List<String> orderlist=new ArrayList<>();
@@ -104,58 +104,73 @@ public Integer getOrdersLeft(String time,String partnerId){
            int derliveryTime=Integer.parseInt(time.substring(0,2))*60+Integer.parseInt(time.substring(3));
              for(String orderId: orders){
                 Order order=ordermap.get(orderId);
-                String gettime=order.getDeliveryTime()+"";
-                if(!gettime.equals(time)){
+                int gettime=order.getDeliveryTime();
+                if(gettime>derliveryTime){
                   cnt++;
                 }
             
          }
-     return  cnt;
+       return  cnt;
 }
-public int getLasttime(String partnerId){
+public String getLasttime(String partnerId){
   
-  int ans=0;
+  int deliveryTime=0;
+  String ans="";
   List<String> orders=new ArrayList<>();
   if(partnerorderpairmap.containsKey(partnerId)){
      orders=partnerorderpairmap.get(partnerId);
       String lastorderId=orders.get(orders.size()-1);
        Order order=ordermap.get(lastorderId);
-        ans=order.getDeliveryTime();
+        deliveryTime=order.getDeliveryTime();
    }
-  return ans;
+        int hour=deliveryTime/60;
+        String shour="";
+        if(hour<10){
+            shour+="0"+String.valueOf(hour);
+        }
+        else{
+            shour=String.valueOf(hour);
+        }
+        int min=deliveryTime%60;
+        String minute="";
+        if(min<10){
+            minute="0"+String.valueOf(min);
+        }
+        else{
+            minute=String.valueOf(min);
+        }
+        ans=shour+":"+minute;
+        return ans;
 }
 public  void deletePartner(String partnerId){
   
-    if(orderpartnermap.containsKey(partnerId)){
-       Order order=orderpartnermap.get(partnerId);
-       for(String id:ordermap.keySet()){
-        
-        if((order.getId().equals(id))){
-            ordermap.put(order.getId(),order);
-           orderpartnermap.remove(partnerId);
+      deliverypartnerrmap.remove(partnerId);
+      List<String> list=partnerorderpairmap.getOrDefault(partnerId, new ArrayList<>());
+      ListIterator<String> itr=list.listIterator();
+       while(itr.hasNext()){
+         String s=itr.next();
+         partnerorderpairmap.remove(s);
        }
+       partnerorderpairmap.remove(partnerId);
     }
-  }
-    
- if(deliverypartnerrmap.containsKey(partnerId)){
-     deliverypartnerrmap.remove(partnerId);
- }
-}
-
-
+  
 public  void deleteOrder(String orderId){
   
   if(ordermap.containsKey(orderId)){
        ordermap.remove(orderId);
     }
-    for(String partnerId:deliverypartnerrmap.keySet()){
+    
           
-        Order order=orderpartnermap.get(partnerId);
-          if(order.getId().equals(orderId)){
-              deliverypartnerrmap.remove(partnerId);
-           }
+        String partnerId=orderpartnermap.get(orderId);
+        List<String> list=partnerorderpairmap.get(partnerId);
+        for(String s:list){
+            if(s.equals(orderId)){
+                list.remove(s);
+            }
+        }
+          partnerorderpairmap.put(partnerId,list);
         
     }
 }
-}
+
 
